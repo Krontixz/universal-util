@@ -1,0 +1,123 @@
+import { Button, VerticalBox, HorizontalBox, ScrollView } from "std-widgets.slint";
+
+component NavButton inherits Rectangle {
+    in-out property <string> text;
+    in-out property <bool> active;
+    callback clicked;
+    
+    height: 45px;
+    background: active ? #3a3a3a : transparent;
+    border-radius: 8px;
+    animate background { duration: 150ms; }
+
+    TouchArea { clicked => { root.clicked(); } }
+
+    HorizontalBox {
+        padding-left: 15px;
+        Text {
+            text: root.text;
+            color: active ? #007aff : #eeeeee;
+            vertical-alignment: center;
+            font-size: 14px;
+            font-weight: active ? 700 : 400;
+        }
+    }
+}
+
+export component AppWindow inherits Window {
+    title: "OmniTools - All-in-One Local Utility";
+    width: 900px;
+    height: 600px;
+    background: #1a1a1a;
+
+    // Signals to communicate with Rust
+    callback switch_tab(int);
+    callback process_action(string); // e.g., "convert", "upscale"
+    
+    in property <int> active_tab: 0;
+    in property <string> status_text: "Ready";
+
+    HorizontalBox {
+        padding: 0;
+        spacing: 0;
+
+        // --- Sidebar ---
+        Rectangle {
+            width: 200px;
+            background: #252525;
+            
+            VerticalBox {
+                padding: 10px;
+                alignment: start;
+                spacing: 5px;
+                
+                Text {
+                    text: "OmniTools";
+                    font-size: 20px;
+                    font-weight: 800;
+                    color: #007aff;
+                    horizontal-alignment: center;
+                }
+                
+                Rectangle { height: 20px; } // Spacer
+
+                NavButton { text: "Converter"; active: active_tab == 0; clicked => { switch_tab(0) } }
+                NavButton { text: "Upscaler"; active: active_tab == 1; clicked => { switch_tab(1) } }
+                NavButton { text: "Compressor"; active: active_tab == 2; clicked => { switch_tab(2) } }
+                NavButton { text: "Viewer"; active: active_tab == 3; clicked => { switch_tab(3) } }
+                NavButton { text: "Packager"; active: active_tab == 4; clicked => { switch_tab(4) } }
+            }
+        }
+
+        // --- Main Content Area ---
+        VerticalBox {
+            padding: 30px;
+            
+            // Dynamic Content Title
+            Text {
+                text: active_tab == 0 ? "File Converter" :
+                      active_tab == 1 ? "Pixel-Perfect Upscaler" :
+                      active_tab == 2 ? "Lossless Compressor" :
+                      active_tab == 3 ? "Universal Viewer" : "App Packager";
+                font-size: 28px;
+                font-weight: 700;
+                color: white;
+            }
+
+            // Main Workspace (Card Style)
+            Rectangle {
+                background: #2d2d2d;
+                border-radius: 12px;
+                border-width: 1px;
+                border-color: #404040;
+                
+                VerticalBox {
+                    alignment: center;
+                    spacing: 20px;
+                    
+                    Text {
+                        text: "Drag and Drop Files Here";
+                        color: #888;
+                        horizontal-alignment: center;
+                    }
+
+                    Button {
+                        text: "Select Files";
+                        primary: true;
+                        clicked => { process_action("select") }
+                    }
+                }
+            }
+
+            // Bottom Status Bar
+            HorizontalBox {
+                max-height: 30px;
+                Text {
+                    text: root.status_text;
+                    color: #00ffaa;
+                    font-size: 12px;
+                }
+            }
+        }
+    }
+}
