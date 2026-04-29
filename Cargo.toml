@@ -5,25 +5,13 @@ edition = "2021"
 build = "build.rs"
 
 [dependencies]
-# UI Framework - Modern, lightweight, and native
-slint = "1.6"
+rfd = "0.14"          # Native Windows file dialogs
+image = "0.24"        # Pixel manipulation & Nearest-Neighbor
+oxipng = "9.1"        # Lossless PNG reduction
+rayon = "1.8"         # Multi-core parallel processing
+anyhow = "1.0"        # Professional error handling
 
-# Image Processing & Clean Pixel Upscaling
-image = "0.24" # For handling pixel data
-integer-scaling = "1.0" # For perfect "clean pixel" upscaling
 
-# Multimedia Conversion (FFmpeg wrapper)
-rust_ffmpeg = "1.0" # High-level safe interface for FFmpeg
-
-# Lossless Compression
-oxipng = "9.0" # Best-in-class lossless PNG optimization
-zstd = "0.13"  # High-speed general purpose compression
-rust-lzma = "0.6" # For .7z / .xz style compression
-
-# File Handling & Viewers
-file-format = { version = "0.24", features = ["reader"] } # Detects what a file is by its signature
-walkdir = "2.4" # For bulk processing folders
-anyhow = "1.0"  # For easy error handling
 
 [build-dependencies]
 slint-build = "1.6" # Compiles your .slint UI files to Rust code
