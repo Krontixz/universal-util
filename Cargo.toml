@@ -1,0 +1,30 @@
+[package]
+name = "universal-util"
+version = "0.1.0"
+edition = "2021"
+build = "build.rs"
+
+[dependencies]
+# UI Framework - Modern, lightweight, and native
+slint = "1.6"
+
+# Image Processing & Clean Pixel Upscaling
+image = "0.24" # For handling pixel data
+integer-scaling = "1.0" # For perfect "clean pixel" upscaling
+
+# Multimedia Conversion (FFmpeg wrapper)
+rust_ffmpeg = "1.0" # High-level safe interface for FFmpeg
+
+# Lossless Compression
+oxipng = "9.0" # Best-in-class lossless PNG optimization
+zstd = "0.13"  # High-speed general purpose compression
+rust-lzma = "0.6" # For .7z / .xz style compression
+
+# File Handling & Viewers
+file-format = { version = "0.24", features = ["reader"] } # Detects what a file is by its signature
+walkdir = "2.4" # For bulk processing folders
+anyhow = "1.0"  # For easy error handling
+
+[build-dependencies]
+slint-build = "1.6" # Compiles your .slint UI files to Rust code
+cc = "1.0"          # Allows Rust to compile your C++ files during 'cargo build'
